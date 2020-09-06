@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from 'prop-types'
-
+import earth from '../earthspin.mp4'
 
 /**
- * 
  * Usage:
  * ```js
  * <LoadingBar URI={videoAsset}
@@ -12,7 +11,6 @@ import PropTypes from 'prop-types'
  *          showHint: true
  * }} />
  * ```
- * URI asset should be either an asset imported to variable, or a literal string.
  */
 export default function LoadingBar(props) {
 
@@ -43,14 +41,58 @@ export default function LoadingBar(props) {
 
   // setup state for readable stream progress
   const [progress, setProgress] = useState(0)
-
+  const [size, setSize] = useState(0)
+  const [received, setReceived] = useState(0)
+  const [complete, setComplete] = useState(false)
   // start fetch and create readable stream
-  useEffect(() => {}, []) // call upon component mount
+  useEffect(() => {get()}, []) // call upon component mount
+
+
+  // second order functions passed in via props
+  const onComplete = props.onComplete || null
+
+  function get(){
+    fetch(earth)
+    .then(res => {
+        let size = res.headers.get('Content-Length')
+        console.log('Total Size: '+ size)
+        setSize(size)
+        return res.body
+    })
+    .then(body => {
+        let reader = body.getReader()
+        return new ReadableStream({
+            start(controller){
+                return pump()
+                function pump(){
+                    return reader.read().then(({done, value})=>{
+                        if(done){
+                            controller.close()
+                            return
+                        }
+                        controller.enqueue(value)
+                        let size = value.length
+                        setReceived(old => old + size)
+                        console.log(size)
+                        return pump()
+                    })
+                }
+            }
+        })
+    })
+    .then(stream => setComplete(true))
+  }
+  // chunk read callback
+  useEffect(()=>{
+    console.log(received)
+  },[received])
+
+    //   render
   return (
     // container element
     <div
       style={{
-        width: "200px",
+        width: "300px",
       }}
     >
       {/* outer part of loading bar */}
@@ -66,8 +108,8 @@ export default function LoadingBar(props) {
         <div
           className="react-loading-bar-inner"
           style={{
-            width: `${progress}%`,
-            height: "100%",
+            width: `${(received/size)*100}%`,
+            height: "20px",
             background: "black",
           }}
         ></div>
@@ -90,7 +132,14 @@ export default function LoadingBar(props) {
 
 // propTypes
 LoadingBar.propTypes = {
+    /** {string} of path to asset location. */
     URI: PropTypes.string,
+    /** {object} containing user defined option values. */
     options: PropTypes.object,
-    style: PropTypes.object
+    /** {object} containing user defined styles in react inline-styles format. */
+    style: PropTypes.object,
+    /** {string} for use in list via array.map function */
+    key: PropTypes.string,
+    /** {function}: callback to fire (in parent component) on completion of download */
+    onComplete: PropTypes.func
 }
