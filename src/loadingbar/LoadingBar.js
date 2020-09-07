@@ -31,11 +31,12 @@ export default function LoadingBar(props) {
   }
 
   // set options from props or use defaults
-  const optionsProps = { ...props?.options }
   const options = {
-    displayPercent: optionsProps.displayPercent || true,
-    hint: optionsProps.hint || "Downloading",
-    showHint: optionsProps.showHint || false,
+    displayPercent: props?.displayPercent || true,
+    hint: props?.hint || "Downloading",
+    showHint: props?.showHint || false,
+    doneMessage: props?.doneMessage || 'Done!',
+    smoothing: parseSmoothing(props?.smoothing)
   }
 
   // setup state for readable stream progress
@@ -52,7 +53,9 @@ export default function LoadingBar(props) {
   const onComplete = props.onComplete || null
 
   function get() {
-    fetch(earth)
+    fetch(earth,{
+        
+    })
       .then((res) => {
         let size = res.headers.get("Content-Length")
         console.log("Total Size: " + size)
@@ -121,6 +124,7 @@ export default function LoadingBar(props) {
             width: `${(received / size) * 100}%`,
             height: "20px",
             background: "black",
+            transition: `width ${options.smoothing} linear`
           }}
         ></div>
       </div>
@@ -161,4 +165,27 @@ LoadingBar.propTypes = {
   showHint: PropTypes.bool,
   /** {string: low, medium, high} determines how smooth the animation of the progress bar is*/
   smoothing: PropTypes.string
+}
+
+const animations = {
+
+}
+
+
+function parseSmoothing(string){
+  if(string){
+    switch(string){
+      case 'low':
+        return '.05s'
+        break
+      case "medium":
+        return '.2s'
+        break
+      case 'high':
+        return '1s'
+        break
+      default:
+        return '.2s'
+    }
+  }
 }
