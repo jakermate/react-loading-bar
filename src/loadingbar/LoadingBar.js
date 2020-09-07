@@ -35,8 +35,9 @@ export default function LoadingBar(props) {
     displayPercent: props?.displayPercent || true,
     hint: props?.hint || "Downloading",
     showHint: props?.showHint || false,
-    doneMessage: props?.doneMessage || 'Done!',
-    smoothing: parseSmoothing(props?.smoothing)
+    doneMessage: props?.doneMessage || "Done!",
+    smoothing: parseSmoothing(props?.smoothing),
+    theme: props?.theme || 'basic'
   }
 
   // setup state for readable stream progress
@@ -53,9 +54,7 @@ export default function LoadingBar(props) {
   const onComplete = props.onComplete || null
 
   function get() {
-    fetch(earth,{
-        
-    })
+    fetch(earth, {})
       .then((res) => {
         let size = res.headers.get("Content-Length")
         console.log("Total Size: " + size)
@@ -87,10 +86,10 @@ export default function LoadingBar(props) {
   }
 
   // onComplete callback if provided by dev
-  useEffect(()=>{
+  useEffect(() => {
     // if stream is complete and onComplete callback is provided, run callback
-    if(complete && onComplete && typeof onComplete === 'function'){
-        onComplete()
+    if (complete && onComplete && typeof onComplete === "function") {
+      onComplete()
     }
     return
   }, [complete])
@@ -100,12 +99,41 @@ export default function LoadingBar(props) {
     console.log(received)
   }, [received])
 
-  //   render
+  // optional element components
+  const percentageElement = (
+    <div>
+      <div style={{fontWeight:'light'}}>
+        {isNaN(((size / received) * 100).toFixed(0))
+          ? 0
+          : ((size / received) * 100).toFixed(0)}
+        <span style={{ fontWeight:'bold', position:'relative'}}>%</span>
+      </div>
+    </div>
+  )
+
+  const themes = {
+    'basic':{
+      background: 'rgba(255,255,255,.1)',
+      border: `0px solid white`
+    },
+
+    'outline':{
+      background: 'transparent',
+      border: `2px solid white`
+    },
+    'minimal':{
+
+    }
+  }
+
+  //  MARKUP
   return (
     // container element
     <div
       style={{
-        width: "300px",
+        width: `${!complete ? '300px' : '0px'}`,
+        transition: 'width .4s cubic-bezier(0.36, 0, 0.66, -0.56)',
+        transitionDelay: '2s',
       }}
     >
       {/* outer part of loading bar */}
@@ -113,23 +141,25 @@ export default function LoadingBar(props) {
         className="react-loading-bar-outer"
         style={{
           height: styleProps.height,
-          padding: "4px",
-          border: "1px solid black",
+          border: `${themes[options.theme].border}`,
+          borderRadius: "14px",
+          background: `${themes[options.theme].background}`
         }}
       >
         {/* inner animated part of loading bar */}
         <div
           className="react-loading-bar-inner"
           style={{
-            width: `${(received / size) * 100}%`,
+            width: `${((received / size) * 100).toFixed(0)}%`,
             height: "20px",
-            background: "black",
-            transition: `width ${options.smoothing} linear`
+            background: "white",
+            transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+            borderRadius: "14px",
           }}
         ></div>
       </div>
 
-      {/*  hint container, only render if hint is enabled */}
+      {/*  hint messsage true/false */}
       {options.showHint && (
         <div
           style={{
@@ -137,6 +167,16 @@ export default function LoadingBar(props) {
           }}
         >
           {options.hint}
+        </div>
+      )}
+      {/* percentage readout true/false */}
+      {options.displayPercent && (
+        <div
+          style={{
+            marginTop: "8px",
+          }}
+        >
+          {percentageElement}
         </div>
       )}
     </div>
@@ -154,7 +194,7 @@ LoadingBar.propTypes = {
   /** {function}: callback to fire (in parent component) on completion of download */
   onComplete: PropTypes.func,
   /** {string} message to display after download is complete */
-  doneMessage: PropTypes.string,
+  completeMessage: PropTypes.string,
   /** {boolean} modal determines if this behaves like a normally styled component, or if the loader will behave like a modal, taking up the whole pages focus */
   modal: PropTypes.bool,
   /** {boolean} display percentage complete in addition to progress bar */
@@ -164,28 +204,32 @@ LoadingBar.propTypes = {
   /** {boolean} to show/hide hint message */
   showHint: PropTypes.bool,
   /** {string: low, medium, high} determines how smooth the animation of the progress bar is*/
-  smoothing: PropTypes.string
+  smoothing: PropTypes.string,
+  /** {string: hex, rgb, rgba} primary color */
+  colorPrimary: PropTypes.string,
+  /** {string: hex, rgb, rgba} secondary color */
+  colorSecondary: PropTypes.string,
+  /** {string} preset color themes */
+  theme: PropTypes.string,
+  
 }
 
-const animations = {
+const animations = {}
 
-}
-
-
-function parseSmoothing(string){
-  if(string){
-    switch(string){
-      case 'low':
-        return '.05s'
+function parseSmoothing(string) {
+  if (string) {
+    switch (string) {
+      case "low":
+        return ".05s"
         break
       case "medium":
-        return '.2s'
+        return ".2s"
         break
-      case 'high':
-        return '1s'
+      case "high":
+        return "1s"
         break
       default:
-        return '.2s'
+        return ".2s"
     }
   }
 }
