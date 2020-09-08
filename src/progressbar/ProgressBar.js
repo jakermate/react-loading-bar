@@ -42,6 +42,7 @@ export default function LoadingBar(props) {
     )
   }
 
+  // SMART STATE
   // setup state for readable stream progress
   const [progress, setProgress] = useState(0)
   const [size, setSize] = useState(0)
@@ -108,6 +109,7 @@ export default function LoadingBar(props) {
     console.log(received)
   }, [received])
 
+  // DUMB STATE
   const [percent, setPercent] = useState(0.01)
   // dumb component percentage update
   useEffect(() => {
@@ -115,6 +117,12 @@ export default function LoadingBar(props) {
       setPercent(props.percent)
     }
   }, [props.percent])
+  // dumb component completion update
+  useEffect(()=>{
+    if(props.triggerComplete === true && props.dumb){
+      setComplete(true)
+    }
+  }, [props.triggerComplete])
 
   // optional element components
   const percentageElement = ( //percentage tracker
@@ -223,7 +231,53 @@ export default function LoadingBar(props) {
   // DUMB COMPONENT RENDER
   else{
     return(
-      <div></div>
+      // container element
+      <div
+        style={{
+          ...options.containerStyle,
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: "10px 0 10px 0",
+          letterSpacing: "2px",
+        }}
+      >
+        <div
+          style={{
+            color: `${options.colorText}`,
+            width: `${!complete ? "300px" : "0px"}`,
+            transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
+            transitionDelay: `${options.delay}s`,
+          }}
+        >
+          {/* outer part of loading bar */}
+          <div
+            className="react-loading-bar-outer"
+            style={{
+              border: `${themes[options.theme].border}`,
+              borderRadius: "14px",
+              background: `${themes[options.theme].background}`,
+            }}
+          >
+            {/* inner animated part of loading bar */}
+            <div
+              className="react-loading-bar-inner"
+              style={{
+                width: `${props.percent.toFixed(0) || 0}%`,
+                height: "2px",
+                background: `${options.colorPrimary}`,
+                transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+                borderRadius: "14px",
+              }}
+            ></div>
+          </div>
+
+          {/*  hint messsage true/false */}
+          {options.showHint && hintElement}
+          {/* percentage readout true/false */}
+          {options.displayPercent && percentageElement}
+        </div>
+      </div>
     )
   }
 }
@@ -267,7 +321,7 @@ LoadingBar.propTypes = {
   /** {boolean} if dumb, percent is controlled manually by percent parameter and not by component itself */
   dumb: PropTypes.bool,
   /** {boolean} manually trigger completion animation */
-  done: PropTypes.bool,
+  triggerComplete: PropTypes.bool,
 }
 
 const animations = {}
