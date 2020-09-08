@@ -5,7 +5,7 @@ import earth from "../earthspin.mp4"
 /**
  * Usage:
  * ```js
- * <LoadingBar URI={videoAsset}
+ * <LoadingBar URL={videoAsset}
  *      options={{
  *          hint: 'Video is loading',
  *          showHint: true
@@ -13,19 +13,11 @@ import earth from "../earthspin.mp4"
  * ```
  */
 export default function LoadingBar(props) {
-  // get URI for resource to load/download
-  const URI = props.URI // this will need to throw error if not present
-  if (!URI) {
-    console.log(URI)
-    // catch missing prop error
-    throw new Error(
-      "URI for file to download is required. (URI prop in LoadingBar component.)"
-    )
-  }
-
+ 
   // set options from props or use defaults
   const options = {
-    displayPercent: props?.displayPercent !== undefined ? props?.displayPercent : true,
+    displayPercent:
+    props?.displayPercent !== undefined ? props?.displayPercent : true,
     hint: props?.hint || "Downloading",
     showHint: props?.showHint || false,
     doneMessage: props?.doneMessage || "Done!",
@@ -36,8 +28,20 @@ export default function LoadingBar(props) {
     colorText: props?.colorText || "white",
     delay: props?.delay || "1.2",
     height: props?.height || "30px",
-    containerStyle: props?.containerStyle || {}
+    containerStyle: props?.containerStyle || {},
+    percent: props?.percent,
+    dumb: props?.dumb || false
   }
+
+   // get URI for resource to load/download
+   const URL = props.URL // this will need to throw error if not present
+   if (!URL && !options.dumb) {
+     console.log(URL)
+     // catch missing prop error
+     throw new Error(
+       "URL for file to download is required. (URL prop in LoadingBar component.)"
+     )
+   }
 
   // setup state for readable stream progress
   const [progress, setProgress] = useState(0)
@@ -46,7 +50,10 @@ export default function LoadingBar(props) {
   const [complete, setComplete] = useState(false)
   // start fetch and create readable stream
   useEffect(() => {
-    get()
+    // only start fetch if component is smart
+    if(!options.dumb){
+      get()
+    }
   }, []) // call upon component mount
 
   // second order functions passed in via props
@@ -102,11 +109,21 @@ export default function LoadingBar(props) {
     console.log(received)
   }, [received])
 
+  
+  const [percent, setPercent] = useState(.01)
+  // dumb component percentage update
+  useEffect(()=>{
+    if(options.dumb){
+      setPercent(props.percent)
+    }
+  }, [props.percent])
+
+
   // optional element components
   const percentageElement = ( //percentage tracker
     <div
       style={{
-        marginTop:'10px',
+        marginTop: "10px",
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
@@ -124,7 +141,7 @@ export default function LoadingBar(props) {
   const hintElement = ( // hint element
     <div
       style={{
-        marginTop:'10px',
+        marginTop: "10px",
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
@@ -154,7 +171,14 @@ export default function LoadingBar(props) {
   //  MARKUP
   return (
     // container element
-    <div style={{...options.containerStyle}}>
+    <div
+      style={{
+        ...options.containerStyle,
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "row",
+      }}
+    >
       <div
         style={{
           color: `${options.colorText}`,
@@ -186,17 +210,9 @@ export default function LoadingBar(props) {
         </div>
 
         {/*  hint messsage true/false */}
-        {options.showHint && (
-          
-            hintElement
-         
-        )}
+        {options.showHint && hintElement}
         {/* percentage readout true/false */}
-        {options.displayPercent && (
-          
-            percentageElement
-          
-        )}
+        {options.displayPercent && percentageElement}
       </div>
     </div>
   )
@@ -205,7 +221,7 @@ export default function LoadingBar(props) {
 // propTypes
 LoadingBar.propTypes = {
   /** {string} of path to asset location. */
-  URI: PropTypes.string,
+  URL: PropTypes.string,
   /** {object} containing user defined styles in react inline-styles format. */
   containerStyle: PropTypes.object,
   /** {string} for use in list via array.map function */
@@ -236,6 +252,12 @@ LoadingBar.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   /** {string || number} height of bar in px */
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  /** {number} manually control progress of bar without providing an asset path/URL */
+  percent: PropTypes.number,
+  /** {boolean} if dumb, percent is controlled manually by percent parameter and not by component itself */
+  dumb: PropTypes.bool,
+  /** {boolean} manually trigger completion animation */
+  done: PropTypes.bool,
 }
 
 const animations = {}
