@@ -23,21 +23,20 @@ export default function LoadingBar(props) {
     )
   }
 
-  // load styles from props or use defaults
-  const styleProps = { ...props?.style } // use optional chain to determine if prop is provided
-  const style = {
-    borderColor: styleProps.borderColor || styleProps.borderColor || "black",
-    height: styleProps.borderColor || "30px",
-  }
-
   // set options from props or use defaults
   const options = {
-    displayPercent: props?.displayPercent || true,
+    displayPercent: props?.displayPercent !== undefined ? props?.displayPercent : true,
     hint: props?.hint || "Downloading",
     showHint: props?.showHint || false,
     doneMessage: props?.doneMessage || "Done!",
     smoothing: parseSmoothing(props?.smoothing),
-    theme: props?.theme || 'basic'
+    theme: props?.theme || "basic",
+    colorPrimary: props?.colorPrimary || "white",
+    colorSecondary: props?.colorSecondary || "white",
+    colorText: props?.colorText || "white",
+    delay: props?.delay || "1.2",
+    height: props?.height || "30px",
+    containerStyle: props?.containerStyle || {}
   }
 
   // setup state for readable stream progress
@@ -89,7 +88,11 @@ export default function LoadingBar(props) {
   useEffect(() => {
     // if stream is complete and onComplete callback is provided, run callback
     if (complete && onComplete && typeof onComplete === "function") {
-      onComplete()
+      // use delay parameter to time complete handler with animations
+      setTimeout(() => {
+        onComplete()
+        // call oncomplete after animation delay and duration complete
+      }, parseInt(options.delay) * 1000 + 1000)
     }
     return
   }, [complete])
@@ -100,85 +103,101 @@ export default function LoadingBar(props) {
   }, [received])
 
   // optional element components
-  const percentageElement = (
-    <div>
-      <div style={{fontWeight:'light'}}>
+  const percentageElement = ( //percentage tracker
+    <div
+      style={{
+        marginTop:'10px',
+        opacity: !complete ? 1 : 0,
+        transition: `opacity .4s ease-in`,
+        transitionDelay: `${options.delay}s`,
+      }}
+    >
+      <div style={{ fontWeight: "light" }}>
         {isNaN(((size / received) * 100).toFixed(0))
           ? 0
           : ((size / received) * 100).toFixed(0)}
-        <span style={{ fontWeight:'bold', position:'relative'}}>%</span>
+        <span style={{ fontWeight: "bold", position: "relative" }}>%</span>
       </div>
     </div>
   )
 
+  const hintElement = ( // hint element
+    <div
+      style={{
+        marginTop:'10px',
+        opacity: !complete ? 1 : 0,
+        transition: `opacity .4s ease-in`,
+        transitionDelay: `${options.delay}s`,
+      }}
+    >
+      {options.hint}
+    </div>
+  )
+
+  // styles
   const themes = {
-    'basic':{
-      background: 'rgba(255,255,255,.1)',
-      border: `0px solid white`
+    basic: {
+      background: "rgba(255,255,255,.1)",
+      border: `0px solid ${options.colorPrimary}`,
     },
 
-    'outline':{
-      background: 'transparent',
-      border: `2px solid white`
+    outline: {
+      background: "transparent",
+      border: `2px solid ${options.colorPrimary}`,
     },
-    'minimal':{
-
-    }
+    minimal: {
+      background: "transparent",
+      border: `1px solid ${options.colorPrimary}`,
+    },
   }
 
   //  MARKUP
   return (
     // container element
-    <div
-      style={{
-        width: `${!complete ? '300px' : '0px'}`,
-        transition: 'width .4s cubic-bezier(0.36, 0, 0.66, -0.56)',
-        transitionDelay: '2s',
-      }}
-    >
-      {/* outer part of loading bar */}
+    <div style={{...options.containerStyle}}>
       <div
-        className="react-loading-bar-outer"
         style={{
-          height: styleProps.height,
-          border: `${themes[options.theme].border}`,
-          borderRadius: "14px",
-          background: `${themes[options.theme].background}`
+          color: `${options.colorText}`,
+          width: `${!complete ? "300px" : "0px"}`,
+          transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
+          transitionDelay: `${options.delay}s`,
         }}
       >
-        {/* inner animated part of loading bar */}
+        {/* outer part of loading bar */}
         <div
-          className="react-loading-bar-inner"
+          className="react-loading-bar-outer"
           style={{
-            width: `${((received / size) * 100).toFixed(0)}%`,
-            height: "20px",
-            background: "white",
-            transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+            border: `${themes[options.theme].border}`,
             borderRadius: "14px",
+            background: `${themes[options.theme].background}`,
           }}
-        ></div>
-      </div>
+        >
+          {/* inner animated part of loading bar */}
+          <div
+            className="react-loading-bar-inner"
+            style={{
+              width: `${((received / size) * 100).toFixed(0)}%`,
+              height: "2px",
+              background: `${options.colorPrimary}`,
+              transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+              borderRadius: "14px",
+            }}
+          ></div>
+        </div>
 
-      {/*  hint messsage true/false */}
-      {options.showHint && (
-        <div
-          style={{
-            width: "100%",
-          }}
-        >
-          {options.hint}
-        </div>
-      )}
-      {/* percentage readout true/false */}
-      {options.displayPercent && (
-        <div
-          style={{
-            marginTop: "8px",
-          }}
-        >
-          {percentageElement}
-        </div>
-      )}
+        {/*  hint messsage true/false */}
+        {options.showHint && (
+          
+            hintElement
+         
+        )}
+        {/* percentage readout true/false */}
+        {options.displayPercent && (
+          
+            percentageElement
+          
+        )}
+      </div>
     </div>
   )
 }
@@ -188,7 +207,7 @@ LoadingBar.propTypes = {
   /** {string} of path to asset location. */
   URI: PropTypes.string,
   /** {object} containing user defined styles in react inline-styles format. */
-  style: PropTypes.object,
+  containerStyle: PropTypes.object,
   /** {string} for use in list via array.map function */
   key: PropTypes.string,
   /** {function}: callback to fire (in parent component) on completion of download */
@@ -209,9 +228,14 @@ LoadingBar.propTypes = {
   colorPrimary: PropTypes.string,
   /** {string: hex, rgb, rgba} secondary color */
   colorSecondary: PropTypes.string,
-  /** {string} preset color themes */
+  /** {string} text color */
+  colorText: PropTypes.string,
+  /** {string} preset style themes */
   theme: PropTypes.string,
-  
+  /** {string || number} width in px of bar */
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  /** {string || number} height of bar in px */
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 const animations = {}
