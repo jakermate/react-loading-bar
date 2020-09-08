@@ -7,11 +7,12 @@ function App(props) {
       <header className="App-header">
         <div className="container mx-auto">
           <ProgressBar 
-          URI={'fwd'}
+          URL={'fwd'}
           showHint={false}
           hint={'getting file'}
           smoothing={'high'}
           theme={'basic'}
+          dumb={false}
           colorPrimary={'linear-gradient(to right, green, cyan)'}
           colorText={'cyan'}
           containerStyle={{
@@ -19,14 +20,26 @@ function App(props) {
           }}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
           <ProgressBar 
-          URI={'fwd'}
-          showHint={false}
+          URL={'fwd'}
+          dumb={false}
+          showHint={true}
           hint={'DOWNLOADING'}
           displayPercent={false}
           smoothing={'medium'}
           theme={'outline'}
-          colorPrimary={'linear-gradient(to right, green, cyan)'}
+          colorPrimary={'linear-gradient(to right, gray, white)'}
           colorText={'cyan'}
+          onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
+          <ProgressBar 
+          dumb={true}
+          showHint={true}
+          hint={'DOWNLOADING'}
+          displayPercent={false}
+          smoothing={'medium'}
+          theme={'outline'}
+          
+          colorPrimary={'linear-gradient(to right, gray, white)'}
+          colorText={'white'}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
         </div>
       </header>

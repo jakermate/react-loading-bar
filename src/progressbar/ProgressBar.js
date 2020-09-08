@@ -13,11 +13,10 @@ import earth from "../earthspin.mp4"
  * ```
  */
 export default function LoadingBar(props) {
- 
   // set options from props or use defaults
   const options = {
     displayPercent:
-    props?.displayPercent !== undefined ? props?.displayPercent : true,
+      props?.displayPercent !== undefined ? props?.displayPercent : true,
     hint: props?.hint || "Downloading",
     showHint: props?.showHint || false,
     doneMessage: props?.doneMessage || "Done!",
@@ -30,18 +29,18 @@ export default function LoadingBar(props) {
     height: props?.height || "30px",
     containerStyle: props?.containerStyle || {},
     percent: props?.percent,
-    dumb: props?.dumb || false
+    dumb: props?.dumb || false,
   }
 
-   // get URI for resource to load/download
-   const URL = props.URL // this will need to throw error if not present
-   if (!URL && !options.dumb) {
-     console.log(URL)
-     // catch missing prop error
-     throw new Error(
-       "URL for file to download is required. (URL prop in LoadingBar component.)"
-     )
-   }
+  // get URI for resource to load/download
+  const URL = props.URL // this will need to throw error if not present
+  if (!URL && !options.dumb) {
+    console.log(URL)
+    // catch missing prop error
+    throw new Error(
+      "URL for file to download is required. (URL prop in LoadingBar component.)"
+    )
+  }
 
   // setup state for readable stream progress
   const [progress, setProgress] = useState(0)
@@ -51,7 +50,7 @@ export default function LoadingBar(props) {
   // start fetch and create readable stream
   useEffect(() => {
     // only start fetch if component is smart
-    if(!options.dumb){
+    if (!options.dumb) {
       get()
     }
   }, []) // call upon component mount
@@ -109,21 +108,20 @@ export default function LoadingBar(props) {
     console.log(received)
   }, [received])
 
-  
-  const [percent, setPercent] = useState(.01)
+  const [percent, setPercent] = useState(0.01)
   // dumb component percentage update
-  useEffect(()=>{
-    if(options.dumb){
+  useEffect(() => {
+    if (options.dumb) {
       setPercent(props.percent)
     }
   }, [props.percent])
-
 
   // optional element components
   const percentageElement = ( //percentage tracker
     <div
       style={{
         marginTop: "10px",
+        fontSize:'12px',
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
@@ -142,6 +140,7 @@ export default function LoadingBar(props) {
     <div
       style={{
         marginTop: "10px",
+        fontSize: '12px',
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
@@ -168,54 +167,65 @@ export default function LoadingBar(props) {
     },
   }
 
-  //  MARKUP
-  return (
-    // container element
-    <div
-      style={{
-        ...options.containerStyle,
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "row",
-      }}
-    >
+  //  SMART COMPONENT MARKUP
+  if (!options.dumb) {
+    return (
+      // container element
       <div
         style={{
-          color: `${options.colorText}`,
-          width: `${!complete ? "300px" : "0px"}`,
-          transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
-          transitionDelay: `${options.delay}s`,
+          ...options.containerStyle,
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: "10px 0 10px 0",
+          letterSpacing: "2px",
         }}
       >
-        {/* outer part of loading bar */}
         <div
-          className="react-loading-bar-outer"
           style={{
-            border: `${themes[options.theme].border}`,
-            borderRadius: "14px",
-            background: `${themes[options.theme].background}`,
+            color: `${options.colorText}`,
+            width: `${!complete ? "300px" : "0px"}`,
+            transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
+            transitionDelay: `${options.delay}s`,
           }}
         >
-          {/* inner animated part of loading bar */}
+          {/* outer part of loading bar */}
           <div
-            className="react-loading-bar-inner"
+            className="react-loading-bar-outer"
             style={{
-              width: `${((received / size) * 100).toFixed(0)}%`,
-              height: "2px",
-              background: `${options.colorPrimary}`,
-              transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+              border: `${themes[options.theme].border}`,
               borderRadius: "14px",
+              background: `${themes[options.theme].background}`,
             }}
-          ></div>
-        </div>
+          >
+            {/* inner animated part of loading bar */}
+            <div
+              className="react-loading-bar-inner"
+              style={{
+                width: `${((received / size) * 100).toFixed(0)}%`,
+                height: "2px",
+                background: `${options.colorPrimary}`,
+                transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
+                borderRadius: "14px",
+              }}
+            ></div>
+          </div>
 
-        {/*  hint messsage true/false */}
-        {options.showHint && hintElement}
-        {/* percentage readout true/false */}
-        {options.displayPercent && percentageElement}
+          {/*  hint messsage true/false */}
+          {options.showHint && hintElement}
+          {/* percentage readout true/false */}
+          {options.displayPercent && percentageElement}
+        </div>
       </div>
-    </div>
-  )
+    )
+    
+  }
+  // DUMB COMPONENT RENDER
+  else{
+    return(
+      <div></div>
+    )
+  }
 }
 
 // propTypes
@@ -262,20 +272,21 @@ LoadingBar.propTypes = {
 
 const animations = {}
 
+// get smoothing rate
 function parseSmoothing(string) {
   if (string) {
     switch (string) {
       case "low":
-        return ".05s"
+        return ".1s"
         break
       case "medium":
-        return ".2s"
+        return ".8s"
         break
       case "high":
-        return "1s"
+        return "1.4s"
         break
       default:
-        return ".2s"
+        return ".8s"
     }
   }
 }
