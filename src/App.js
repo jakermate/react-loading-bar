@@ -57,6 +57,7 @@ function App(props) {
         </div>
         <ProgressSpinner
           URL={earth}
+          radius={200}
         ></ProgressSpinner>
       </header>
     </div>

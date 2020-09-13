@@ -30,7 +30,7 @@ export default function ProgressSpinner(props) {
     textStyle: props?.textStyle || {},
     percent: props?.percent,
     dumb: props?.dumb || false,
-    radius: props?.radius || '300px',
+    radius: getRadius(props?.radius) || 300,
     completeMessage: props?.completeMessage || "Done!",
   }
 
@@ -212,8 +212,8 @@ export default function ProgressSpinner(props) {
         <div
           style={{
             color: `${options.colorText}`,
-            width: `${!complete ? `${options.radius}px` : "300px"}`,
-            height: `${!complete ? `${options.radius}px` : "300px"}`,
+            width: `${!complete ? `${options.radius}px` : `${options.radius}px`}`, // turn second value back to 0 for animations
+            height: `${!complete ? `${options.radius}px` : `${options.radius}px`}`, // turn second value back to 0 for animations
             position: 'relative',
             zIndex:80,
             // transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
@@ -311,6 +311,8 @@ ProgressSpinner.propTypes = {
   colorSecondary: PropTypes.string,
   /** {string} text color */
   colorText: PropTypes.string,
+  /** {number} desired radius of spinner */
+  radius: PropTypes.number,
   /** {string} preset style themes */
   theme: PropTypes.string,
   /** {string || number} width in px of bar */
@@ -344,4 +346,14 @@ function parseSmoothing(string) {
         return ".8s"
     }
   }
+}
+// get radius (apply min and max standards)
+function getRadius(desiredRadius){
+    if(desiredRadius < 50){
+        return 50
+    }
+    if(desiredRadius > 600){
+        return 600
+    }
+    else return desiredRadius
 }
