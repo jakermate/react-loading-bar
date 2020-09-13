@@ -28,8 +28,10 @@ export default function LoadingBar(props) {
     delay: props?.delay || "1.2",
     height: props?.height || "30px",
     containerStyle: props?.containerStyle || {},
+    textStyle: props?.textStyle || {},
     percent: props?.percent,
     dumb: props?.dumb || false,
+    completeMessage: props?.completeMessage || 'Done!'
   }
 
   // get URI for resource to load/download
@@ -60,7 +62,7 @@ export default function LoadingBar(props) {
   const onComplete = props.onComplete || null
 
   function get() {
-    fetch(earth, {})
+    fetch(URL, {})
       .then((res) => {
         let size = res.headers.get("Content-Length")
         console.log("Total Size: " + size)
@@ -133,6 +135,7 @@ export default function LoadingBar(props) {
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
+        ...options.textStyle
       }}
     >
       <div style={{ fontWeight: "light" }}>
@@ -152,9 +155,10 @@ export default function LoadingBar(props) {
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
+        ...options.textStyle
       }}
     >
-      {options.hint}
+      {!complete ? options.hint : options.completeMessage}
     </div>
   )
 
@@ -288,6 +292,8 @@ LoadingBar.propTypes = {
   URL: PropTypes.string,
   /** {object} containing user defined styles in react inline-styles format. */
   containerStyle: PropTypes.object,
+  /** {object} styles for hint and completion text */
+  textStyle: PropTypes.object,
   /** {string} for use in list via array.map function */
   key: PropTypes.string,
   /** {function}: callback to fire (in parent component) on completion of download */
