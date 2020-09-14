@@ -31,7 +31,8 @@ export default function LoadingBar(props) {
     textStyle: props?.textStyle || {},
     percent: props?.percent,
     dumb: props?.dumb || false,
-    completeMessage: props?.completeMessage || 'Done!'
+    width: getWidth(props?.width) || 300,
+    completeMessage: props?.completeMessage || "Done!",
   }
 
   // get URI for resource to load/download
@@ -120,8 +121,8 @@ export default function LoadingBar(props) {
     }
   }, [props.percent])
   // dumb component completion update
-  useEffect(()=>{
-    if(props.triggerComplete === true && props.dumb){
+  useEffect(() => {
+    if (props.triggerComplete === true && props.dumb) {
       setComplete(true)
     }
   }, [props.triggerComplete])
@@ -131,11 +132,11 @@ export default function LoadingBar(props) {
     <div
       style={{
         marginTop: "10px",
-        fontSize:'12px',
+        fontSize: "12px",
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
-        ...options.textStyle
+        ...options.textStyle,
       }}
     >
       <div style={{ fontWeight: "light" }}>
@@ -151,11 +152,12 @@ export default function LoadingBar(props) {
     <div
       style={{
         marginTop: "10px",
-        fontSize: '12px',
+        marginRight:`${options.showHint && options.displayPercent ? '8px' : '0'}`,
+        fontSize: "12px",
         opacity: !complete ? 1 : 0,
         transition: `opacity .4s ease-in`,
         transitionDelay: `${options.delay}s`,
-        ...options.textStyle
+        ...options.textStyle,
       }}
     >
       {!complete ? options.hint : options.completeMessage}
@@ -196,7 +198,7 @@ export default function LoadingBar(props) {
         <div
           style={{
             color: `${options.colorText}`,
-            width: `${!complete ? "300px" : "0px"}`,
+            width: `${!complete ? `${options.width}px` : "0px"}`,
             transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
             transitionDelay: `${options.delay}s`,
           }}
@@ -222,19 +224,25 @@ export default function LoadingBar(props) {
               }}
             ></div>
           </div>
-
-          {/*  hint messsage true/false */}
-          {options.showHint && hintElement}
-          {/* percentage readout true/false */}
-          {options.displayPercent && percentageElement}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent:'center'
+            }}
+          >
+            {/*  hint messsage true/false */}
+            {options.showHint && hintElement}
+            {/* percentage readout true/false */}
+            {options.displayPercent && percentageElement}
+          </div>
         </div>
       </div>
     )
-    
   }
   // DUMB COMPONENT RENDER
-  else{
-    return(
+  else {
+    return (
       // container element
       <div
         style={{
@@ -249,7 +257,7 @@ export default function LoadingBar(props) {
         <div
           style={{
             color: `${options.colorText}`,
-            width: `${!complete ? "300px" : "0px"}`,
+            width: `${!complete ? `${options.width}px` : "0px"}`,
             transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
             transitionDelay: `${options.delay}s`,
           }}
@@ -258,6 +266,7 @@ export default function LoadingBar(props) {
           <div
             className="react-loading-bar-outer"
             style={{
+              width: "100%",
               border: `${themes[options.theme].border}`,
               borderRadius: "14px",
               background: `${themes[options.theme].background}`,
@@ -275,11 +284,18 @@ export default function LoadingBar(props) {
               }}
             ></div>
           </div>
-
-          {/*  hint messsage true/false */}
-          {options.showHint && hintElement}
-          {/* percentage readout true/false */}
-          {options.displayPercent && percentageElement}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent:'center'
+            }}
+          >
+            {/*  hint messsage true/false */}
+            {options.showHint && hintElement}
+            {/* percentage readout true/false */}
+            {options.displayPercent && percentageElement}
+          </div>
         </div>
       </div>
     )
@@ -349,4 +365,14 @@ function parseSmoothing(string) {
         return ".8s"
     }
   }
+}
+
+// get width (apply min and max standards)
+function getWidth(desiredWidth) {
+  if (desiredWidth < 50) {
+    return 80
+  }
+  if (desiredWidth > 600) {
+    return 600
+  } else return desiredWidth
 }
