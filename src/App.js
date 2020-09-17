@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import ProgressBar from './loaders/ProgressBar'
-import ProgressSpinner from './loaders/ProgressSpinner'
+import ProgressBar from './progressbar/ProgressBar'
+import ProgressSpinner from './progressbar/ProgressSpinner'
 import earth from './earthspin.mp4'
 function App(props) {
   const [percent, setPercent] = useState(0)

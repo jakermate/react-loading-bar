@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import earth from "../earthspin.mp4"
 
 /**
  * Usage:
