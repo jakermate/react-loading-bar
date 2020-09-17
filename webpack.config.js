@@ -6,7 +6,7 @@ module.exports = {
         "ProgressSpinner": "./src/loaders/ProgressSpinner.js"
     },
     "output": {
-        "path": path.resolve(__dirname, 'dist'),
+        "path": path.resolve(__dirname, 'lib'),
         "filename": "[name].js"
     },
     "module": {

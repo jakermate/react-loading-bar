@@ -5,16 +5,7 @@
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "autoprefixer": "^9.8.6",
-    "postcss-cli": "^7.1.2",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "tailwindcss": "^1.8.3"
+    
   },
   "files": [
     "dist"
@@ -49,6 +40,21 @@
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "autoprefixer": "^9.8.6",
+    "postcss-cli": "^7.1.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "tailwindcss": "^1.8.3"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.6.0",
+        "react": "^16.0.0",
+        "react-dom": "^16.0.0"
   }
 }
