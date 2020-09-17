@@ -5,9 +5,7 @@
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
   "dependencies": {},
-  "files": [
-    "dist"
-  ],
+  
   "scripts": {
     "start": "npm run build:css && react-scripts start",
     "test": "react-scripts test",
