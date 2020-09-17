@@ -1,6 +1,6 @@
 {
   "name": "react-progress-loaders",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": false,
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
@@ -51,5 +51,4 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   }
-
 }
