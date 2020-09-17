@@ -1,14 +1,12 @@
 const path = require('path')
 module.exports = {
     "mode": "development",
-    "entry": {
-        "ProgressBar": "./src/loaders/ProgressBar.js",
-        "ProgressSpinner": "./src/loaders/ProgressSpinner.js"
-    },
+    "entry": "./src/loaders/ProgressBar.js",
     "output": {
-        "path": path.resolve(__dirname, 'lib'),
-        "filename": "[name].js"
-    },
+        "path": path.resolve(__dirname, 'build'),
+        "filename": 'index.js',
+        "libraryTarget": 'commonjs2'
+      },
     "module": {
         "rules": [
             {

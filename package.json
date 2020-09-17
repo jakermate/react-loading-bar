@@ -5,8 +5,9 @@
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
   "dependencies": {},
+  "file":"build",
   "scripts": {
-    "start": "npm run build:css && react-scripts start",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
@@ -33,7 +34,6 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
-    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",

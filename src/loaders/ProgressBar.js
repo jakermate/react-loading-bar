@@ -11,7 +11,7 @@ import PropTypes from "prop-types"
  * }} />
  * ```
  */
-export default function LoadingBar(props) {
+export default function ProgressBar(props) {
   // set options from props or use defaults
   const options = {
     displayPercent:
@@ -302,7 +302,7 @@ export default function LoadingBar(props) {
 }
 
 // propTypes
-LoadingBar.propTypes = {
+ProgressBar.propTypes = {
   /** {string} of path to asset location. */
   URL: PropTypes.string,
   /** {object} containing user defined styles in react inline-styles format. */
