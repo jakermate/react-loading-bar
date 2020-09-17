@@ -1,11 +1,11 @@
 {
   "name": "react-progress-loaders",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
   "dependencies": {},
-  "file":"build",
+  "file": "build",
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
