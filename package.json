@@ -13,8 +13,7 @@
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
-    "build": "webpack",
-    "publish": "npm publish dist"
+    "build": "webpack"
   },
   "eslintConfig": {
     "extends": "react-app"
