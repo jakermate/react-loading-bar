@@ -67,6 +67,7 @@ function App(props) {
           colorText={'white'}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
         </div>
+        <ProgressBar URL={earth}></ProgressBar>
         <ProgressSpinner
           URL={earth}
           radius={200}
