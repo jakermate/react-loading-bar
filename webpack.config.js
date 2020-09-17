@@ -4,7 +4,7 @@ module.exports = {
     "entry": "./src/loaders/ProgressBar.js",
     "output": {
         "path": path.resolve(__dirname, 'build'),
-        "filename": 'index.js'
+        "filename": 'ProgressBar.js'
       },
     "module": {
         "rules": [
@@ -20,8 +20,8 @@ module.exports = {
             }
         ]
     },
-    "externals":{
-        "react": "commonjs react",
-        "react-dom": "commonjs react-dom"
-    }
+    externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM'
+      },
 }
