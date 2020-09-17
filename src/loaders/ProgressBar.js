@@ -140,9 +140,9 @@ export default function LoadingBar(props) {
       }}
     >
       <div style={{ fontWeight: "light" }}>
-        {isNaN(((size / received) * 100).toFixed(0))
+        {isNaN(((received / size) * 100).toFixed(0))
           ? 0
-          : ((size / received) * 100).toFixed(0)}
+          : ((received / size) * 100).toFixed(0)}
         <span style={{ fontWeight: "bold", position: "relative" }}>%</span>
       </div>
     </div>

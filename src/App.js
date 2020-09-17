@@ -1,14 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import ProgressBar from './progressbar/ProgressBar'
-import ProgressSpinner from './progressbar/ProgressSpinner'
+import ProgressBar from './loaders/ProgressBar'
+import ProgressSpinner from './loaders/ProgressSpinner'
 import earth from './earthspin.mp4'
 function App(props) {
+  const [percent, setPercent] = useState(0)
   const [isDone, setIsDone] = useState(false)
   useEffect(()=>{
     setTimeout(()=>{
       setIsDone(true)
     }, 2000)
+    // 100 count
+    // let interval = setInterval(()=>{
+    //   if(percent < 101){
+    //     setPercent(prev=>prev+1)
+    //     console.log(percent)
+    //   }
+    //   else{
+    //     clearInterval(interval)
+    //   }
+    // }, 100)
   },[])
 
   return (
@@ -16,12 +27,13 @@ function App(props) {
       <header className="App-header">
         <div className="container mx-auto">
           <ProgressBar 
-          URL={'fwd'}
+          URL={earth}
           showHint={false}
           hint={'getting file'}
           smoothing={'high'}
           theme={'basic'}
           dumb={false}
+          smoothing={'medium'}
           textStyle={{
             fontSize:'8px'
           }}
@@ -32,11 +44,11 @@ function App(props) {
           }}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
           <ProgressBar 
-          URL={'fwd'}
+          URL={earth}
           dumb={false}
           showHint={true}
           hint={'DOWNLOADING'}
-          displayPercent={false}
+          displayPercent={true}
           smoothing={'medium'}
           theme={'outline'}
           colorPrimary={'linear-gradient(to right, gray, white)'}
@@ -46,11 +58,11 @@ function App(props) {
           dumb={true}
           showHint={true}
           hint={'DOWNLOADING'}
-          displayPercent={false}
+          displayPercent={true}
           smoothing={'medium'}
           theme={'outline'}
-          percent={88}
-          triggerComplete={isDone}
+
+          percent={50}
           colorPrimary={'linear-gradient(to right, gray, white)'}
           colorText={'white'}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
@@ -58,6 +70,11 @@ function App(props) {
         <ProgressSpinner
           URL={earth}
           radius={200}
+        ></ProgressSpinner>
+        <ProgressSpinner
+          dumb
+          radius={100}
+          percent={percent}
         ></ProgressSpinner>
       </header>
     </div>

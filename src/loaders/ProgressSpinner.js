@@ -32,6 +32,7 @@ export default function ProgressSpinner(props) {
     dumb: props?.dumb || false,
     radius: getRadius(props?.radius) || 300,
     completeMessage: props?.completeMessage || "Done!",
+    accent: props?.accentColor || 'orange'
   }
 
   // get URI for resource to load/download
@@ -46,7 +47,6 @@ export default function ProgressSpinner(props) {
 
   // SMART STATE
   // setup state for readable stream progress
-  const [progress, setProgress] = useState(0)
   const [size, setSize] = useState(0)
   const [received, setReceived] = useState(0)
   const [complete, setComplete] = useState(false)
@@ -180,16 +180,19 @@ export default function ProgressSpinner(props) {
   const themes = {
     basic: {
       background: "rgba(255,255,255,.1)",
-      foreground: `0px solid ${options.colorPrimary}`
+      foreground: `0px solid ${options.colorPrimary}`,
+      accent: `${options.accent}`
     },
 
     outline: {
       background: "transparent",
-      foreground: `2px solid ${options.colorPrimary}`
+      foreground: `2px solid ${options.colorPrimary}`,
+      accent: `${options.accent}`
     },
     minimal: {
       background: "transparent",
-      foreground: `1px solid ${options.colorPrimary}`
+      foreground: `1px solid ${options.colorPrimary}`,
+      accent: `${options.accent}`
     },
   }
 
@@ -204,7 +207,7 @@ export default function ProgressSpinner(props) {
           display: "flex",
           justifyContent: "center",
           flexDirection: "row",
-          alignItems:'center',
+          alignItems: "center",
           padding: "10px 0 10px 0",
           letterSpacing: "2px",
         }}
@@ -212,50 +215,83 @@ export default function ProgressSpinner(props) {
         <div
           style={{
             color: `${options.colorText}`,
-            width: `${!complete ? `${options.radius}px` : `${options.radius}px`}`, // turn second value back to 0 for animations
-            height: `${!complete ? `${options.radius}px` : `${options.radius}px`}`, // turn second value back to 0 for animations
-            position: 'relative',
-            zIndex:80,
+            width: `${
+              !complete ? `${options.radius}px` : `0px`
+            }`, // turn second value back to 0 for animations
+            height: `${
+              !complete ? `${options.radius}px` : `0px`
+            }`, // turn second value back to 0 for animations
+            position: "relative",
+            transition: 'all .4s cubic-bezier(0.87, 0, 0.13, 1)',
+            zIndex: 80,
             // transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
             transitionDelay: `${options.delay}s`,
-            padding:'10px'
+            padding: "10px",
           }}
         >
           {/* outer part of loading bar */}
           <div
-            className="react-loading-spinner-outer"
+            className="react-progress-spinner-outer"
             style={{
               height: "100%",
               width: "100%",
-            background: `${options.colorPrimary}`,
+              background: `${options.colorPrimary}`,
               zIndex: 99,
-              position: 'relative',
-              borderRadius: '50%',
+              position: "relative",
+              borderRadius: "50%",
               background: `${themes[options.theme].background}`,
             }}
           >
+              <div className="react-progress-spinner-dot-container" style={{
+                  height: "100%",
+                  width: "100%",
+                  position: "absolute",
+                  transform:`rotate(${((received / size)).toFixed(1)*360}deg)`,
+                  transition: `all ${options.smoothing} linear` 
+              }}>
+              <div className="react-progress-spinner-dot" style={{
+                  width:'5%',
+                  height:'5%',
+                  left: `${50-2.5}%`,
+                  borderRadius:'50%',
+                  position:'absolute',
+                  background: `${themes[options.theme].accent}`
+              }}></div>
+              </div>
+             
             {/* inner animated part of loading spinner */}
             <div
-              className="react-loading-spinner-inner"
+              className="react-progress-spinner-inner"
               style={{
-                  display: 'flex',
-                  justifyContent:'center',
+                display: "flex",
+                justifyContent: "center",
+                flexDirection:'column',
+                alignItems:'center',
                 width: `100%`,
-                height: '100%',
-                background: `${themes[options.theme].foreground
-}`,
+                height: "100%",
+                background: `${themes[options.theme].foreground}`,
                 transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
                 borderRadius: "50%",
-
               }}
             >
-                <div className="spinner-center-readout" style={{alignSelf:'center'}}>
-                    {options.displayPercent && percentageElementSmart}
+              <div className="react-progress-spinner-mask" style={{
+
+                display: "flex",
+                justifyContent: "center",
+                background: `${themes[options.theme].background}`,
+                borderRadius: "50%",
+                width: `90%`,
+                height: "90%",
+              }}>
+                <div
+                  className="spinner-center-readout"
+                  style={{ alignSelf: "center" }}
+                >
+                  {options.displayPercent && percentageElementSmart}
                 </div>
+              </div>
             </div>
           </div>
-
-         
         </div>
       </div>
     )
@@ -274,9 +310,7 @@ export default function ProgressSpinner(props) {
           padding: "10px 0 10px 0",
           letterSpacing: "2px",
         }}
-      >
-        
-      </div>
+      ></div>
     )
   }
 }
@@ -309,6 +343,8 @@ ProgressSpinner.propTypes = {
   colorPrimary: PropTypes.string,
   /** {string: hex, rgb, rgba} secondary color */
   colorSecondary: PropTypes.string,
+  /** {string} accent color */
+  accentColor: PropTypes.string,
   /** {string} text color */
   colorText: PropTypes.string,
   /** {number} desired radius of spinner */
@@ -346,14 +382,16 @@ function parseSmoothing(string) {
         return ".8s"
     }
   }
+  else{
+      return '.8s'
+  }
 }
 // get radius (apply min and max standards)
-function getRadius(desiredRadius){
-    if(desiredRadius < 50){
-        return 50
-    }
-    if(desiredRadius > 600){
-        return 600
-    }
-    else return desiredRadius
+function getRadius(desiredRadius) {
+  if (desiredRadius < 50) {
+    return 80
+  }
+  if (desiredRadius > 600) {
+    return 600
+  } else return desiredRadius
 }

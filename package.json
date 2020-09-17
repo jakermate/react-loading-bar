@@ -1,7 +1,9 @@
 {
-  "name": "react-loading-bar",
+  "name": "react-loading-loaders",
   "version": "0.1.0",
   "private": true,
+  "author": "Jake Miller",
+  
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -14,6 +16,9 @@
     "react-scripts": "3.4.3",
     "tailwindcss": "^1.8.3"
   },
+  "files":[
+    "src/loaders"
+  ],
   "scripts": {
     "start": "npm run build:css && react-scripts start",
     "build": "react-scripts build",
