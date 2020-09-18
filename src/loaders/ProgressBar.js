@@ -11,7 +11,7 @@ import PropTypes from "prop-types"
  * }} />
  * ```
  */
-export default function ProgressBar(props) {
+function ProgressBar(props) {
   // set options from props or use defaults
   const options = {
     displayPercent:
@@ -375,3 +375,5 @@ function getWidth(desiredWidth) {
     return 600
   } else return desiredWidth
 }
+
+export default ProgressBar
