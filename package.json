@@ -11,7 +11,7 @@
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
-    "build": "webpack"
+    "build": "babel src/loaders/ProgressBar.js -o dist/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"

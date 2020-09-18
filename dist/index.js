@@ -1,1 +1,423 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=2)}([function(e,t){e.exports=void 0},function(e,t,n){e.exports=n(3)()},function(e,t,n){"use strict";n.r(t);var r=n(0),o=n.n(r),i=n(1),a=n.n(i);function c(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r)}return n}function l(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?c(Object(n),!0).forEach((function(t){u(e,t,n[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):c(Object(n)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t))}))}return e}function u(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function s(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(e)))return;var n=[],r=!0,o=!1,i=void 0;try{for(var a,c=e[Symbol.iterator]();!(r=(a=c.next()).done)&&(n.push(a.value),!t||n.length!==t);r=!0);}catch(e){o=!0,i=e}finally{try{r||null==c.return||c.return()}finally{if(o)throw i}}return n}(e,t)||function(e,t){if(!e)return;if("string"==typeof e)return d(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);"Object"===n&&e.constructor&&(n=e.constructor.name);if("Map"===n||"Set"===n)return Array.from(e);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return d(e,t)}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function d(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function p(e){var t={displayPercent:void 0===(null==e?void 0:e.displayPercent)||(null==e?void 0:e.displayPercent),hint:(null==e?void 0:e.hint)||"Downloading",showHint:(null==e?void 0:e.showHint)||!1,doneMessage:(null==e?void 0:e.doneMessage)||"Done!",smoothing:f(null==e?void 0:e.smoothing),theme:(null==e?void 0:e.theme)||"basic",colorPrimary:(null==e?void 0:e.colorPrimary)||"white",colorSecondary:(null==e?void 0:e.colorSecondary)||"white",colorText:(null==e?void 0:e.colorText)||"white",delay:(null==e?void 0:e.delay)||"1.2",height:(null==e?void 0:e.height)||"30px",containerStyle:(null==e?void 0:e.containerStyle)||{},textStyle:(null==e?void 0:e.textStyle)||{},percent:null==e?void 0:e.percent,dumb:(null==e?void 0:e.dumb)||!1,width:y(null==e?void 0:e.width)||300,completeMessage:(null==e?void 0:e.completeMessage)||"Done!"},n=e.URL;if(!n&&!t.dumb)throw console.log(n),new Error("URL for file to download is required. (URL prop in LoadingBar component.)");var i=s(Object(r.useState)(0),2),a=(i[0],i[1],s(Object(r.useState)(0),2)),c=a[0],u=a[1],d=s(Object(r.useState)(0),2),p=d[0],b=d[1],m=s(Object(r.useState)(!1),2),g=m[0],h=m[1];Object(r.useEffect)((function(){t.dumb||fetch(n,{}).then((function(e){var t=e.headers.get("Content-Length");return console.log("Total Size: "+t),u(t),e.body})).then((function(e){var t=e.getReader();return new ReadableStream({start:function(e){return function n(){return t.read().then((function(t){var r=t.done,o=t.value;if(r)return e.close(),void h(!0);e.enqueue(o);var i=o.length;return b((function(e){return e+i})),console.log(i),n()}))}()}})}))}),[]);var v=e.onComplete||null;Object(r.useEffect)((function(){g&&v&&"function"==typeof v&&setTimeout((function(){v()}),1e3*parseInt(t.delay)+1e3)}),[g]),Object(r.useEffect)((function(){console.log(p)}),[p]);var x=s(Object(r.useState)(.01),2),O=(x[0],x[1]);Object(r.useEffect)((function(){t.dumb&&O(e.percent)}),[e.percent]),Object(r.useEffect)((function(){!0===e.triggerComplete&&e.dumb&&h(!0)}),[e.triggerComplete]);var w=o.a.createElement("div",{style:l({marginTop:"10px",fontSize:"12px",opacity:g?0:1,transition:"opacity .4s ease-in",transitionDelay:"".concat(t.delay,"s")},t.textStyle)},o.a.createElement("div",{style:{fontWeight:"light"}},isNaN((p/c*100).toFixed(0))?0:(p/c*100).toFixed(0),o.a.createElement("span",{style:{fontWeight:"bold",position:"relative"}},"%"))),j=o.a.createElement("div",{style:l({marginTop:"10px",marginRight:"".concat(t.showHint&&t.displayPercent?"8px":"0"),fontSize:"12px",opacity:g?0:1,transition:"opacity .4s ease-in",transitionDelay:"".concat(t.delay,"s")},t.textStyle)},g?t.completeMessage:t.hint),S={basic:{background:"rgba(255,255,255,.1)",border:"0px solid ".concat(t.colorPrimary)},outline:{background:"transparent",border:"2px solid ".concat(t.colorPrimary)},minimal:{background:"transparent",border:"1px solid ".concat(t.colorPrimary)}};return t.dumb?o.a.createElement("div",{style:l(l({},t.containerStyle),{},{display:"flex",justifyContent:"center",flexDirection:"row",padding:"10px 0 10px 0",letterSpacing:"2px"})},o.a.createElement("div",{style:{color:"".concat(t.colorText),width:"".concat(g?"0px":"".concat(t.width,"px")),transition:"width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",transitionDelay:"".concat(t.delay,"s")}},o.a.createElement("div",{className:"react-loading-bar-outer",style:{width:"100%",border:"".concat(S[t.theme].border),borderRadius:"14px",background:"".concat(S[t.theme].background)}},o.a.createElement("div",{className:"react-loading-bar-inner",style:{width:"".concat(e.percent.toFixed(0)||0,"%"),height:"2px",background:"".concat(t.colorPrimary),transition:"width ".concat(t.smoothing," cubic-bezier(0.87, 0, 0.13, 1)"),borderRadius:"14px"}})),o.a.createElement("div",{style:{display:"flex",flexDirection:"row",justifyContent:"center"}},t.showHint&&j,t.displayPercent&&w))):o.a.createElement("div",{style:l(l({},t.containerStyle),{},{display:"flex",justifyContent:"center",flexDirection:"row",padding:"10px 0 10px 0",letterSpacing:"2px"})},o.a.createElement("div",{style:{color:"".concat(t.colorText),width:"".concat(g?"0px":"".concat(t.width,"px")),transition:"width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",transitionDelay:"".concat(t.delay,"s")}},o.a.createElement("div",{className:"react-loading-bar-outer",style:{border:"".concat(S[t.theme].border),borderRadius:"14px",background:"".concat(S[t.theme].background)}},o.a.createElement("div",{className:"react-loading-bar-inner",style:{width:"".concat((p/c*100).toFixed(0),"%"),height:"2px",background:"".concat(t.colorPrimary),transition:"width ".concat(t.smoothing," cubic-bezier(0.87, 0, 0.13, 1)"),borderRadius:"14px"}})),o.a.createElement("div",{style:{display:"flex",flexDirection:"row",justifyContent:"center"}},t.showHint&&j,t.displayPercent&&w)))}function f(e){if(e)switch(e){case"low":return".1s";case"medium":return".8s";case"high":return"1.4s";default:return".8s"}}function y(e){return e<50?80:e>600?600:e}p.propTypes={URL:a.a.string,containerStyle:a.a.object,textStyle:a.a.object,key:a.a.string,onComplete:a.a.func,completeMessage:a.a.string,modal:a.a.bool,displayPercent:a.a.bool,hint:a.a.string,showHint:a.a.bool,smoothing:a.a.string,colorPrimary:a.a.string,colorSecondary:a.a.string,colorText:a.a.string,theme:a.a.string,width:a.a.oneOfType([a.a.string,a.a.number]),height:a.a.oneOfType([a.a.string,a.a.number]),percent:a.a.number,dumb:a.a.bool,triggerComplete:a.a.bool},t.default=p},function(e,t,n){"use strict";var r=n(4);function o(){}function i(){}i.resetWarningCache=o,e.exports=function(){function e(e,t,n,o,i,a){if(a!==r){var c=new Error("Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types");throw c.name="Invariant Violation",c}}function t(){return e}e.isRequired=e;var n={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,elementType:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t,checkPropTypes:i,resetWarningCache:o};return n.PropTypes=n,n}},function(e,t,n){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"}]);
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/**
+ * Usage:
+ * ```js
+ * <LoadingBar URL={videoAsset}
+ *      options={{
+ *          hint: 'Video is loading',
+ *          showHint: true
+ * }} />
+ * ```
+ */
+function ProgressBar(props) {
+  // set options from props or use defaults
+  var options = {
+    displayPercent: (props === null || props === void 0 ? void 0 : props.displayPercent) !== undefined ? props === null || props === void 0 ? void 0 : props.displayPercent : true,
+    hint: (props === null || props === void 0 ? void 0 : props.hint) || "Downloading",
+    showHint: (props === null || props === void 0 ? void 0 : props.showHint) || false,
+    doneMessage: (props === null || props === void 0 ? void 0 : props.doneMessage) || "Done!",
+    smoothing: parseSmoothing(props === null || props === void 0 ? void 0 : props.smoothing),
+    theme: (props === null || props === void 0 ? void 0 : props.theme) || "basic",
+    colorPrimary: (props === null || props === void 0 ? void 0 : props.colorPrimary) || "white",
+    colorSecondary: (props === null || props === void 0 ? void 0 : props.colorSecondary) || "white",
+    colorText: (props === null || props === void 0 ? void 0 : props.colorText) || "white",
+    delay: (props === null || props === void 0 ? void 0 : props.delay) || "1.2",
+    height: (props === null || props === void 0 ? void 0 : props.height) || "30px",
+    containerStyle: (props === null || props === void 0 ? void 0 : props.containerStyle) || {},
+    textStyle: (props === null || props === void 0 ? void 0 : props.textStyle) || {},
+    percent: props === null || props === void 0 ? void 0 : props.percent,
+    dumb: (props === null || props === void 0 ? void 0 : props.dumb) || false,
+    width: getWidth(props === null || props === void 0 ? void 0 : props.width) || 300,
+    completeMessage: (props === null || props === void 0 ? void 0 : props.completeMessage) || "Done!"
+  }; // get URI for resource to load/download
+
+  var URL = props.URL; // this will need to throw error if not present
+
+  if (!URL && !options.dumb) {
+    console.log(URL); // catch missing prop error
+
+    throw new Error("URL for file to download is required. (URL prop in LoadingBar component.)");
+  } // SMART STATE
+  // setup state for readable stream progress
+
+
+  var _useState = (0, _react.useState)(0),
+      _useState2 = _slicedToArray(_useState, 2),
+      progress = _useState2[0],
+      setProgress = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      size = _useState4[0],
+      setSize = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(0),
+      _useState6 = _slicedToArray(_useState5, 2),
+      received = _useState6[0],
+      setReceived = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      complete = _useState8[0],
+      setComplete = _useState8[1]; // start fetch and create readable stream
+
+
+  (0, _react.useEffect)(function () {
+    // only start fetch if component is smart
+    if (!options.dumb) {
+      get();
+    }
+  }, []); // call upon component mount
+  // second order functions passed in via props
+
+  var onComplete = props.onComplete || null;
+
+  function get() {
+    fetch(URL, {}).then(function (res) {
+      var size = res.headers.get("Content-Length");
+      console.log("Total Size: " + size);
+      setSize(size);
+      return res.body;
+    }).then(function (body) {
+      var reader = body.getReader();
+      return new ReadableStream({
+        start: function start(controller) {
+          return pump();
+
+          function pump() {
+            return reader.read().then(function (_ref) {
+              var done = _ref.done,
+                  value = _ref.value;
+
+              if (done) {
+                controller.close();
+                setComplete(true);
+                return;
+              }
+
+              controller.enqueue(value);
+              var size = value.length;
+              setReceived(function (old) {
+                return old + size;
+              });
+              console.log(size);
+              return pump();
+            });
+          }
+        }
+      });
+    });
+  } // onComplete callback if provided by dev
+
+
+  (0, _react.useEffect)(function () {
+    // if stream is complete and onComplete callback is provided, run callback
+    if (complete && onComplete && typeof onComplete === "function") {
+      // use delay parameter to time complete handler with animations
+      setTimeout(function () {
+        onComplete(); // call oncomplete after animation delay and duration complete
+      }, parseInt(options.delay) * 1000 + 1000);
+    }
+
+    return;
+  }, [complete]); // chunk read callback
+
+  (0, _react.useEffect)(function () {
+    console.log(received);
+  }, [received]); // DUMB STATE
+
+  var _useState9 = (0, _react.useState)(0.01),
+      _useState10 = _slicedToArray(_useState9, 2),
+      percent = _useState10[0],
+      setPercent = _useState10[1]; // dumb component percentage update
+
+
+  (0, _react.useEffect)(function () {
+    if (options.dumb) {
+      setPercent(props.percent);
+    }
+  }, [props.percent]); // dumb component completion update
+
+  (0, _react.useEffect)(function () {
+    if (props.triggerComplete === true && props.dumb) {
+      setComplete(true);
+    }
+  }, [props.triggerComplete]); // optional element components
+
+  var percentageElement =
+  /*#__PURE__*/
+  //percentage tracker
+  _react.default.createElement("div", {
+    style: _objectSpread({
+      marginTop: "10px",
+      fontSize: "12px",
+      opacity: !complete ? 1 : 0,
+      transition: "opacity .4s ease-in",
+      transitionDelay: "".concat(options.delay, "s")
+    }, options.textStyle)
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      fontWeight: "light"
+    }
+  }, isNaN((received / size * 100).toFixed(0)) ? 0 : (received / size * 100).toFixed(0), /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontWeight: "bold",
+      position: "relative"
+    }
+  }, "%")));
+
+  var hintElement =
+  /*#__PURE__*/
+  // hint element
+  _react.default.createElement("div", {
+    style: _objectSpread({
+      marginTop: "10px",
+      marginRight: "".concat(options.showHint && options.displayPercent ? '8px' : '0'),
+      fontSize: "12px",
+      opacity: !complete ? 1 : 0,
+      transition: "opacity .4s ease-in",
+      transitionDelay: "".concat(options.delay, "s")
+    }, options.textStyle)
+  }, !complete ? options.hint : options.completeMessage); // styles
+
+
+  var themes = {
+    basic: {
+      background: "rgba(255,255,255,.1)",
+      border: "0px solid ".concat(options.colorPrimary)
+    },
+    outline: {
+      background: "transparent",
+      border: "2px solid ".concat(options.colorPrimary)
+    },
+    minimal: {
+      background: "transparent",
+      border: "1px solid ".concat(options.colorPrimary)
+    }
+  }; //  SMART COMPONENT MARKUP
+
+  if (!options.dumb) {
+    return (
+      /*#__PURE__*/
+      // container element
+      _react.default.createElement("div", {
+        style: _objectSpread(_objectSpread({}, options.containerStyle), {}, {
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: "10px 0 10px 0",
+          letterSpacing: "2px"
+        })
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        style: {
+          color: "".concat(options.colorText),
+          width: "".concat(!complete ? "".concat(options.width, "px") : "0px"),
+          transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
+          transitionDelay: "".concat(options.delay, "s")
+        }
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        className: "react-loading-bar-outer",
+        style: {
+          border: "".concat(themes[options.theme].border),
+          borderRadius: "14px",
+          background: "".concat(themes[options.theme].background)
+        }
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        className: "react-loading-bar-inner",
+        style: {
+          width: "".concat((received / size * 100).toFixed(0), "%"),
+          height: "2px",
+          background: "".concat(options.colorPrimary),
+          transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
+          borderRadius: "14px"
+        }
+      })), /*#__PURE__*/_react.default.createElement("div", {
+        style: {
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: 'center'
+        }
+      }, options.showHint && hintElement, options.displayPercent && percentageElement)))
+    );
+  } // DUMB COMPONENT RENDER
+  else {
+      return (
+        /*#__PURE__*/
+        // container element
+        _react.default.createElement("div", {
+          style: _objectSpread(_objectSpread({}, options.containerStyle), {}, {
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+            padding: "10px 0 10px 0",
+            letterSpacing: "2px"
+          })
+        }, /*#__PURE__*/_react.default.createElement("div", {
+          style: {
+            color: "".concat(options.colorText),
+            width: "".concat(!complete ? "".concat(options.width, "px") : "0px"),
+            transition: "width .4s cubic-bezier(0.36, 0, 0.66, -0.56)",
+            transitionDelay: "".concat(options.delay, "s")
+          }
+        }, /*#__PURE__*/_react.default.createElement("div", {
+          className: "react-loading-bar-outer",
+          style: {
+            width: "100%",
+            border: "".concat(themes[options.theme].border),
+            borderRadius: "14px",
+            background: "".concat(themes[options.theme].background)
+          }
+        }, /*#__PURE__*/_react.default.createElement("div", {
+          className: "react-loading-bar-inner",
+          style: {
+            width: "".concat(props.percent.toFixed(0) || 0, "%"),
+            height: "2px",
+            background: "".concat(options.colorPrimary),
+            transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
+            borderRadius: "14px"
+          }
+        })), /*#__PURE__*/_react.default.createElement("div", {
+          style: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: 'center'
+          }
+        }, options.showHint && hintElement, options.displayPercent && percentageElement)))
+      );
+    }
+} // propTypes
+
+
+ProgressBar.propTypes = {
+  /** {string} of path to asset location. */
+  URL: _propTypes.default.string,
+
+  /** {object} containing user defined styles in react inline-styles format. */
+  containerStyle: _propTypes.default.object,
+
+  /** {object} styles for hint and completion text */
+  textStyle: _propTypes.default.object,
+
+  /** {string} for use in list via array.map function */
+  key: _propTypes.default.string,
+
+  /** {function}: callback to fire (in parent component) on completion of download */
+  onComplete: _propTypes.default.func,
+
+  /** {string} message to display after download is complete */
+  completeMessage: _propTypes.default.string,
+
+  /** {boolean} modal determines if this behaves like a normally styled component, or if the loader will behave like a modal, taking up the whole pages focus */
+  modal: _propTypes.default.bool,
+
+  /** {boolean} display percentage complete in addition to progress bar */
+  displayPercent: _propTypes.default.bool,
+
+  /** {string} message to display while in progress */
+  hint: _propTypes.default.string,
+
+  /** {boolean} to show/hide hint message */
+  showHint: _propTypes.default.bool,
+
+  /** {string: low, medium, high} determines how smooth the animation of the progress bar is*/
+  smoothing: _propTypes.default.string,
+
+  /** {string: hex, rgb, rgba} primary color */
+  colorPrimary: _propTypes.default.string,
+
+  /** {string: hex, rgb, rgba} secondary color */
+  colorSecondary: _propTypes.default.string,
+
+  /** {string} text color */
+  colorText: _propTypes.default.string,
+
+  /** {string} preset style themes */
+  theme: _propTypes.default.string,
+
+  /** {string || number} width in px of bar */
+  width: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
+
+  /** {string || number} height of bar in px */
+  height: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
+
+  /** {number} manually control progress of bar without providing an asset path/URL */
+  percent: _propTypes.default.number,
+
+  /** {boolean} if dumb, percent is controlled manually by percent parameter and not by component itself */
+  dumb: _propTypes.default.bool,
+
+  /** {boolean} manually trigger completion animation */
+  triggerComplete: _propTypes.default.bool
+};
+var animations = {}; // get smoothing rate
+
+function parseSmoothing(string) {
+  if (string) {
+    switch (string) {
+      case "low":
+        return ".1s";
+        break;
+
+      case "medium":
+        return ".8s";
+        break;
+
+      case "high":
+        return "1.4s";
+        break;
+
+      default:
+        return ".8s";
+    }
+  }
+} // get width (apply min and max standards)
+
+
+function getWidth(desiredWidth) {
+  if (desiredWidth < 50) {
+    return 80;
+  }
+
+  if (desiredWidth > 600) {
+    return 600;
+  } else return desiredWidth;
+}
+
+var _default = ProgressBar;
+exports.default = _default;
