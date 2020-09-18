@@ -16,6 +16,10 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "repository": {
+    "type": "github",
+    "directory": 
+  },
   "browserslist": {
     "production": [
       ">0.2%",
