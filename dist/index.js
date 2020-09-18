@@ -220,15 +220,24 @@ function ProgressBar(props) {
   var themes = {
     basic: {
       background: "rgba(255,255,255,.1)",
-      border: "0px solid ".concat(options.colorPrimary)
+      border: "0px solid ".concat(options.colorPrimary),
+      height: '2px'
     },
     outline: {
       background: "transparent",
-      border: "2px solid ".concat(options.colorPrimary)
+      border: "2px solid ".concat(options.colorPrimary),
+      height: '10px'
     },
     minimal: {
       background: "transparent",
-      border: "1px solid ".concat(options.colorPrimary)
+      border: "1px solid ".concat(options.colorPrimary),
+      height: '2px'
+    },
+    modern: {
+      background: "transparent",
+      border: 'none',
+      borderRadius: '14px',
+      height: '20px'
     }
   }; //  SMART COMPONENT MARKUP
 
@@ -262,7 +271,7 @@ function ProgressBar(props) {
         className: "react-loading-bar-inner",
         style: {
           width: "".concat((received / size * 100).toFixed(0), "%"),
-          height: "2px",
+          height: "".concat(themes[options.theme].height),
           background: "".concat(options.colorPrimary),
           transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
           borderRadius: "14px"
@@ -307,7 +316,7 @@ function ProgressBar(props) {
           className: "react-loading-bar-inner",
           style: {
             width: "".concat(props.percent.toFixed(0) || 0, "%"),
-            height: "2px",
+            height: "".concat(themes[options.theme].height),
             background: "".concat(options.colorPrimary),
             transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
             borderRadius: "14px"
