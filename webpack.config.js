@@ -3,8 +3,8 @@ module.exports = {
     "mode": "development",
     "entry": "./src/loaders/ProgressBar.js",
     "output": {
-        "path": path.resolve(__dirname, 'build'),
-        "filename": 'ProgressBar.js'
+        "path": path.resolve(__dirname, 'dist'),
+        "filename": 'index.js'
       },
     "module": {
         "rules": [
