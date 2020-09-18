@@ -1,10 +1,15 @@
 {
   "name": "react-progress-loaders",
-  "version": "0.1.10",
+  "version": "0.1.7",
   "private": false,
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "prop-types": "^15.7.2"
+  },
   "file": "build",
   "scripts": {
     "start": "react-scripts start",
@@ -40,15 +45,9 @@
     "@testing-library/user-event": "^7.2.1",
     "autoprefixer": "^9.8.6",
     "postcss-cli": "^7.1.2",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "tailwindcss": "^1.8.3"
   },
   "peerDependencies": {
-    "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
   }
 }
