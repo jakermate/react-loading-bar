@@ -16,7 +16,7 @@
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
-    "build": "webpack"
+    "build": "webpack --mode=production"
   },
   "eslintConfig": {
     "extends": "react-app"

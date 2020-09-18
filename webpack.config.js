@@ -14,7 +14,6 @@ module.exports = {
                 "use": {
                     "loader": "babel-loader",
                     "options": {
-                        
                     }
                 }
             }
