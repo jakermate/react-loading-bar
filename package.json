@@ -5,18 +5,13 @@
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
   "main": "dist/index.js",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "prop-types": "^15.7.2"
-  },
   "file": "build",
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
-    "build": "webpack --mode=production"
+    "build": "webpack"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,7 +41,14 @@
     "autoprefixer": "^9.8.6",
     "postcss-cli": "^7.1.2",
     "react-scripts": "3.4.3",
-    "tailwindcss": "^1.8.3"
+    "tailwindcss": "^1.8.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "prop-types": "^15.7.2"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "prop-types": "^15.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
 }
