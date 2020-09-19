@@ -1,13 +1,9 @@
 # [React Progress Loaders](https://www.jakemiller.io/react-progress-loaders)
 
 react-progress-loaders
-<!-- 
-[![npm version](http://img.shields.io/npm/v/react-progress-loaders.svg?style=flat)](https://npmjs.org/package/react-progress-loaders "View this project on npm") -->
 
-![Npm Version][npm-version-image]][npm-version-url]
-[![Build Status][travis-svg]][travis-url]
-[![License][license-image]][license-url]
-[![Downloads][downloads-image]][downloads-url]
+[![npm version](http://img.shields.io/npm/v/react-progress-loaders.svg?style=flat)](https://npmjs.org/package/react-progress-loaders "View this project on npm")
+
 
 [Author](github.com/jakermate) | [Repo](github.com/jakermate/react-progress-bar) | [Package](https://www.npmjs.com/package/react-progress-loaders)
 
