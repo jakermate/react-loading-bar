@@ -202,6 +202,28 @@ function ProgressBar(props) {
     }
   }, "%")));
 
+  var percentageElementDumb =
+  /*#__PURE__*/
+  //percentage tracker
+  _react.default.createElement("div", {
+    style: _objectSpread({
+      marginTop: "10px",
+      fontSize: "12px",
+      opacity: !complete ? 1 : 0,
+      transition: "opacity .4s ease-in",
+      transitionDelay: "".concat(options.delay, "s")
+    }, options.textStyle)
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      fontWeight: "light"
+    }
+  }, props.percent, /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontWeight: "bold",
+      position: "relative"
+    }
+  }, "%")));
+
   var hintElement =
   /*#__PURE__*/
   // hint element
@@ -315,7 +337,7 @@ function ProgressBar(props) {
         }, /*#__PURE__*/_react.default.createElement("div", {
           className: "react-loading-bar-inner",
           style: {
-            width: "".concat(props.percent.toFixed(0) || 0, "%"),
+            width: "".concat(props.percent || 0, "%"),
             height: "".concat(themes[options.theme].height),
             background: "".concat(options.colorPrimary),
             transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
@@ -327,7 +349,7 @@ function ProgressBar(props) {
             flexDirection: "row",
             justifyContent: 'center'
           }
-        }, options.showHint && hintElement, options.displayPercent && percentageElement)))
+        }, options.showHint && hintElement, options.displayPercent && percentageElementDumb)))
       );
     }
 } // propTypes

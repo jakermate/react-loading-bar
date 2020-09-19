@@ -146,6 +146,23 @@ function ProgressBar(props) {
       </div>
     </div>
   )
+  const percentageElementDumb = ( //percentage tracker
+    <div
+      style={{
+        marginTop: "10px",
+        fontSize: "12px",
+        opacity: !complete ? 1 : 0,
+        transition: `opacity .4s ease-in`,
+        transitionDelay: `${options.delay}s`,
+        ...options.textStyle,
+      }}
+    >
+      <div style={{ fontWeight: "light" }}>
+        {props.percent}
+        <span style={{ fontWeight: "bold", position: "relative" }}>%</span>
+      </div>
+    </div>
+  )
 
   const hintElement = ( // hint element
     <div
@@ -284,7 +301,7 @@ function ProgressBar(props) {
             <div
               className="react-loading-bar-inner"
               style={{
-                width: `${props.percent.toFixed(0) || 0}%`,
+                width: `${props.percent || 0}%`,
                 height: `${themes[options.theme].height}`,
                 background: `${options.colorPrimary}`,
                 transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
@@ -302,7 +319,7 @@ function ProgressBar(props) {
             {/*  hint messsage true/false */}
             {options.showHint && hintElement}
             {/* percentage readout true/false */}
-            {options.displayPercent && percentageElement}
+            {options.displayPercent && percentageElementDumb}
           </div>
         </div>
       </div>
