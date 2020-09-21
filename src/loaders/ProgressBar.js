@@ -5,10 +5,9 @@ import PropTypes from "prop-types"
  * Usage:
  * ```js
  * <LoadingBar URL={videoAsset}
- *      options={{
- *          hint: 'Video is loading',
- *          showHint: true
- * }} />
+ *      theme={'basic'}
+ *      dumb={false}
+ *  />
  * ```
  */
 function ProgressBar(props) {
@@ -32,6 +31,7 @@ function ProgressBar(props) {
     dumb: props?.dumb || false,
     width: getWidth(props?.width) || 300,
     completeMessage: props?.completeMessage || "Done!",
+    timeout: getTimeout(props?.smoothing) || 400
   }
 
   // get URI for resource to load/download
@@ -46,7 +46,6 @@ function ProgressBar(props) {
 
   // SMART STATE
   // setup state for readable stream progress
-  const [progress, setProgress] = useState(0)
   const [size, setSize] = useState(0)
   const [received, setReceived] = useState(0)
   const [complete, setComplete] = useState(false)
@@ -57,6 +56,8 @@ function ProgressBar(props) {
       get()
     }
   }, []) // call upon component mount
+
+  
 
   // second order functions passed in via props
   const onComplete = props.onComplete || null
@@ -82,10 +83,14 @@ function ProgressBar(props) {
                   return
                 }
                 controller.enqueue(value)
-                let size = value.length
-                setReceived((old) => old + size)
-                console.log(size)
-                return pump()
+                let size = 0
+                size += value.length
+                setTimeout(()=>{
+                  setReceived((old) => old + size)
+                  console.log('Updating state from chunks.')
+                  return pump()
+                }, options.timeout)
+                
               })
             }
           },
@@ -183,8 +188,8 @@ function ProgressBar(props) {
   // styles
   const themes = {
     basic: {
-      background: "rgba(255,255,255,.1)",
-      border: `0px solid ${options.colorPrimary}`,
+      background: "transparent",
+      border: `1px solid ${options.colorPrimary}`,
       height: '2px'
     },
 
@@ -194,12 +199,13 @@ function ProgressBar(props) {
       height: '10px'
     },
     minimal: {
-      background: "transparent",
-      border: `1px solid ${options.colorPrimary}`,
+      background: "rgba(255,255,255,.1)",
+      border: `0px solid ${options.colorPrimary}`,
       height: '2px'
+      
     },
     modern:{
-      background: "transparent",
+      background: "rgba(255,255,255,.1)",
       border: 'none',
       borderRadius:'14px',
       height: '20px'
@@ -232,6 +238,7 @@ function ProgressBar(props) {
           <div
             className="react-loading-bar-outer"
             style={{
+              overflow:'hidden',
               border: `${themes[options.theme].border}`,
               borderRadius: "14px",
               background: `${themes[options.theme].background}`,
@@ -292,6 +299,7 @@ function ProgressBar(props) {
             className="react-loading-bar-outer"
             style={{
               width: "100%",
+              overflow:'hidden',
               border: `${themes[options.theme].border}`,
               borderRadius: "14px",
               background: `${themes[options.theme].background}`,
@@ -301,7 +309,7 @@ function ProgressBar(props) {
             <div
               className="react-loading-bar-inner"
               style={{
-                width: `${props.percent || 0}%`,
+                width: `${props.percent.toFixed(0) || 0}%`,
                 height: `${themes[options.theme].height}`,
                 background: `${options.colorPrimary}`,
                 transition: `width ${options.smoothing} cubic-bezier(0.87, 0, 0.13, 1)`,
@@ -378,16 +386,16 @@ function parseSmoothing(string) {
   if (string) {
     switch (string) {
       case "low":
-        return ".1s"
+        return ".05s"
         break
       case "medium":
-        return ".8s"
+        return ".4s"
         break
       case "high":
-        return "1.4s"
+        return ".8s"
         break
       default:
-        return ".8s"
+        return ".2s"
     }
   }
 }
@@ -401,5 +409,21 @@ function getWidth(desiredWidth) {
     return 600
   } else return desiredWidth
 }
-
+function getTimeout(smoothingString){
+  if (smoothingString) {
+    switch (smoothingString) {
+      case "low":
+        return 50
+        break
+      case "medium":
+        return 400
+        break
+      case "high":
+        return 800
+        break
+      default:
+        return 400
+    }
+  }
+}
 export default ProgressBar
