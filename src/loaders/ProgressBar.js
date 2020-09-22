@@ -398,6 +398,7 @@ function parseSmoothing(string) {
         return ".2s"
     }
   }
+  return ".4s"
 }
 
 // get width (apply min and max standards)

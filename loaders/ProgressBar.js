@@ -39,10 +39,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  * Usage:
  * ```js
  * <LoadingBar URL={videoAsset}
- *      options={{
- *          hint: 'Video is loading',
- *          showHint: true
- * }} />
+ *      theme={'basic'}
+ *      dumb={false}
+ *  />
  * ```
  */
 function ProgressBar(props) {
@@ -64,7 +63,8 @@ function ProgressBar(props) {
     percent: props === null || props === void 0 ? void 0 : props.percent,
     dumb: (props === null || props === void 0 ? void 0 : props.dumb) || false,
     width: getWidth(props === null || props === void 0 ? void 0 : props.width) || 300,
-    completeMessage: (props === null || props === void 0 ? void 0 : props.completeMessage) || "Done!"
+    completeMessage: (props === null || props === void 0 ? void 0 : props.completeMessage) || "Done!",
+    timeout: getTimeout(props === null || props === void 0 ? void 0 : props.smoothing) || 400
   }; // get URI for resource to load/download
 
   var URL = props.URL; // this will need to throw error if not present
@@ -79,23 +79,18 @@ function ProgressBar(props) {
 
   var _useState = (0, _react.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
-      progress = _useState2[0],
-      setProgress = _useState2[1];
+      size = _useState2[0],
+      setSize = _useState2[1];
 
   var _useState3 = (0, _react.useState)(0),
       _useState4 = _slicedToArray(_useState3, 2),
-      size = _useState4[0],
-      setSize = _useState4[1];
+      received = _useState4[0],
+      setReceived = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(0),
+  var _useState5 = (0, _react.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      received = _useState6[0],
-      setReceived = _useState6[1];
-
-  var _useState7 = (0, _react.useState)(false),
-      _useState8 = _slicedToArray(_useState7, 2),
-      complete = _useState8[0],
-      setComplete = _useState8[1]; // start fetch and create readable stream
+      complete = _useState6[0],
+      setComplete = _useState6[1]; // start fetch and create readable stream
 
 
   (0, _react.useEffect)(function () {
@@ -132,12 +127,15 @@ function ProgressBar(props) {
               }
 
               controller.enqueue(value);
-              var size = value.length;
-              setReceived(function (old) {
-                return old + size;
-              });
-              console.log(size);
-              return pump();
+              var size = 0;
+              size += value.length;
+              setTimeout(function () {
+                setReceived(function (old) {
+                  return old + size;
+                });
+                console.log('Updating state from chunks.');
+                return pump();
+              }, options.timeout);
             });
           }
         }
@@ -162,10 +160,10 @@ function ProgressBar(props) {
     console.log(received);
   }, [received]); // DUMB STATE
 
-  var _useState9 = (0, _react.useState)(0.01),
-      _useState10 = _slicedToArray(_useState9, 2),
-      percent = _useState10[0],
-      setPercent = _useState10[1]; // dumb component percentage update
+  var _useState7 = (0, _react.useState)(0.01),
+      _useState8 = _slicedToArray(_useState7, 2),
+      percent = _useState8[0],
+      setPercent = _useState8[1]; // dumb component percentage update
 
 
   (0, _react.useEffect)(function () {
@@ -241,8 +239,8 @@ function ProgressBar(props) {
 
   var themes = {
     basic: {
-      background: "rgba(255,255,255,.1)",
-      border: "0px solid ".concat(options.colorPrimary),
+      background: "transparent",
+      border: "1px solid ".concat(options.colorPrimary),
       height: '2px'
     },
     outline: {
@@ -251,12 +249,12 @@ function ProgressBar(props) {
       height: '10px'
     },
     minimal: {
-      background: "transparent",
-      border: "1px solid ".concat(options.colorPrimary),
+      background: "rgba(255,255,255,.1)",
+      border: "0px solid ".concat(options.colorPrimary),
       height: '2px'
     },
     modern: {
-      background: "transparent",
+      background: "rgba(255,255,255,.1)",
       border: 'none',
       borderRadius: '14px',
       height: '20px'
@@ -285,6 +283,7 @@ function ProgressBar(props) {
       }, /*#__PURE__*/_react.default.createElement("div", {
         className: "react-loading-bar-outer",
         style: {
+          overflow: 'hidden',
           border: "".concat(themes[options.theme].border),
           borderRadius: "14px",
           background: "".concat(themes[options.theme].background)
@@ -330,6 +329,7 @@ function ProgressBar(props) {
           className: "react-loading-bar-outer",
           style: {
             width: "100%",
+            overflow: 'hidden',
             border: "".concat(themes[options.theme].border),
             borderRadius: "14px",
             background: "".concat(themes[options.theme].background)
@@ -337,7 +337,7 @@ function ProgressBar(props) {
         }, /*#__PURE__*/_react.default.createElement("div", {
           className: "react-loading-bar-inner",
           style: {
-            width: "".concat(props.percent || 0, "%"),
+            width: "".concat(props.percent.toFixed(0) || 0, "%"),
             height: "".concat(themes[options.theme].height),
             background: "".concat(options.colorPrimary),
             transition: "width ".concat(options.smoothing, " cubic-bezier(0.87, 0, 0.13, 1)"),
@@ -422,19 +422,19 @@ function parseSmoothing(string) {
   if (string) {
     switch (string) {
       case "low":
-        return ".1s";
+        return ".05s";
         break;
 
       case "medium":
-        return ".8s";
+        return ".4s";
         break;
 
       case "high":
-        return "1.4s";
+        return ".8s";
         break;
 
       default:
-        return ".8s";
+        return ".2s";
     }
   }
 } // get width (apply min and max standards)
@@ -448,6 +448,27 @@ function getWidth(desiredWidth) {
   if (desiredWidth > 600) {
     return 600;
   } else return desiredWidth;
+}
+
+function getTimeout(smoothingString) {
+  if (smoothingString) {
+    switch (smoothingString) {
+      case "low":
+        return 50;
+        break;
+
+      case "medium":
+        return 400;
+        break;
+
+      case "high":
+        return 800;
+        break;
+
+      default:
+        return 400;
+    }
+  }
 }
 
 var _default = ProgressBar;

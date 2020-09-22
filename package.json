@@ -4,14 +4,13 @@
   "private": false,
   "author": "Jake Miller (jakemiller.io)",
   "license": "MIT",
-  "main": "dist/index.js",
-  "file": "build",
+  "main": "loaders",
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
     "build:css": "postcss build ./src/css/tailwinds.css -o ./src/css/main.css",
     "eject": "react-scripts eject",
-    "build": "babel src/loaders/ProgressBar.js -o dist/index.js"
+    "build": "babel src/loaders --out-dir loaders"
   },
   "eslintConfig": {
     "extends": "react-app"

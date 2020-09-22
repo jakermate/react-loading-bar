@@ -3,6 +3,8 @@ import './App.css';
 import ProgressBar from './loaders/ProgressBar'
 import ProgressSpinner from './loaders/ProgressSpinner'
 import earth from './earthspin.mp4'
+import LiquidLoader from './loaders/LiquidLoader';
+import ProgressSquare from './loaders/ProgressSquare';
 function App(props) {
   const [percent, setPercent] = useState(0)
   const [isDone, setIsDone] = useState(false)
@@ -26,7 +28,8 @@ function App(props) {
     <div className="App">
       <header className="App-header">
         <div className="container mx-auto">
-          <ProgressBar 
+        <ProgressSquare URL={earth} size={200} smoothing={'high'}></ProgressSquare>
+          {/* <ProgressBar 
           URL={earth}
           showHint={false}
           hint={'getting file'}
@@ -66,7 +69,6 @@ function App(props) {
           colorPrimary={'linear-gradient(to right, gray, white)'}
           colorText={'white'}
           onComplete={()=>{console.log('Oncomplete callback works!')}}></ProgressBar>
-        </div>
         <ProgressBar URL={earth}></ProgressBar>
         <ProgressSpinner
           URL={earth}
@@ -76,7 +78,8 @@ function App(props) {
           dumb
           radius={100}
           percent={percent}
-        ></ProgressSpinner>
+        ></ProgressSpinner> */}
+        </div>
       </header>
     </div>
   );
